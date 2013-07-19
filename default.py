@@ -36,15 +36,17 @@ def addLinkItem(parameters, li):
 # UI builder functions
 def show_root_menu():
     ''' Show the plugin root menu '''
-    pageUrl = "http://www.ilmeteo.it/video/"
+    pageUrl = "http://www.ilmeteo.it/meteo-video/"
     htmlData = urllib2.urlopen(pageUrl).read()
     
     # Grab video pages
     tree = BeautifulSoup(htmlData, convertEntities=BeautifulSoup.HTML_ENTITIES)
-    links = tree.find("div", "giornale-video-homebox").findAll('a')
-    for link in links:
-        image = "http://media.ilmeteo.it/video/img/tg.jpg"
-        liStyle = xbmcgui.ListItem(link["title"], thumbnailImage=image)
+    videos = tree.findAll("div", "onevideometeo")
+    for video in videos:
+        link = video.find("a")
+        image = link.find("img")['src']
+        title = link.text
+        liStyle = xbmcgui.ListItem(title, thumbnailImage=image)
         addLinkItem({"pageurl": link["href"]}, liStyle)
     xbmcplugin.endOfDirectory(handle=handle, succeeded=True)
 
