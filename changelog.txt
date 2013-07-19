@@ -1,3 +1,7 @@
+[B]1.0.2[/B]
+- updated HTML parsing due to upstream changes.
+- added addon.xml optional metadata.
+
 [B]1.0.1[/B]
 - screen grabbing video pages and URLs.
 
