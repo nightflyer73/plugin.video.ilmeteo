@@ -34,11 +34,26 @@ def addLinkItem(url, li):
 # UI builder functions
 def show_root_menu():
     ''' Show the plugin root menu '''
+    
+    # Config
+    wsBaseUrl = "http://iphone.ilmeteo.it/android-app.php?"
+    wsVersion = "4.3"
+    langId = "ita"
+    appId = "com.ilmeteo.android.ilmeteo"
+    userAgent = "Dalvik/2.1.0 (Linux; U; Android 8.1.0; Pixel 2 Build/OPM1.171019.013)"
+    
+    opener = urllib2.build_opener()
+    # Use Android User-Agent
+    opener.addheaders = [('User-Agent', userAgent)]
+    urllib2.install_opener(opener)
+
     # Generate MD5 hash
     day = datetime.now().day
     hash = hashlib.md5("listVideos#AndroidApp#%02d" % day).hexdigest()
 
-    url = "http://iphone.ilmeteo.it/android-app.php?method=listVideos&x=%s&v=2.98" % hash
+    # Get video list
+    url = wsBaseUrl + "method=listVideos&x=%s&v=%s&lang=%s&app=%s" % (hash, wsVersion, langId, appId)
+    xbmc.log(url)
     xmldata = urllib2.urlopen(url).read()
     dom = minidom.parseString(xmldata)
     
